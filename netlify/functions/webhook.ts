@@ -146,7 +146,7 @@ async function procesarMensaje(messagingEvent: any, cliente: any) {
     }
 
     // Obtener o crear conversación
-    const conversacion = await getOrCreateConversacion(cliente.id_cliente, senderId);
+    const conversacion = await getOrCreateConversacion(cliente.cliente_id || cliente.id_cliente, senderId);
     if (!conversacion) {
       console.error('No se pudo crear/obtener conversación');
       await enviarMensajeError(senderId);

@@ -17,7 +17,7 @@ async function actualizarConPageIdURL() {
         facebook_page_id: '61577782224691',
         estado_suscripcion: 'Activo'
       })
-      .eq('id_cliente', 'C0000')
+      .or('cliente_id.eq.C0000,id_cliente.eq.C0000')
       .select();
 
     if (error) {

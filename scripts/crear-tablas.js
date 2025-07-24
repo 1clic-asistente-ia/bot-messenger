@@ -16,7 +16,7 @@ async function crearTablasFaltantes() {
     const sqlConversaciones = `
       CREATE TABLE IF NOT EXISTS conversaciones (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-        cliente_id TEXT NOT NULL REFERENCES clientes(id_cliente),
+        cliente_id TEXT NOT NULL,
         facebook_user_id TEXT NOT NULL,
         estado TEXT DEFAULT 'activa' CHECK (estado IN ('activa', 'pausada', 'cerrada')),
         resumen_contexto TEXT DEFAULT '',

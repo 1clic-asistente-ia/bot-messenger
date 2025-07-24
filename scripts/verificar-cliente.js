@@ -23,7 +23,8 @@ async function verificarYActualizarCliente() {
 
     console.log('📋 Clientes encontrados:', clientes.length);
     clientes.forEach(cliente => {
-      console.log(`- ID: ${cliente.id_cliente}, Negocio: ${cliente.nombre_negocio}, Page ID: ${cliente.facebook_page_id}`);
+      const clienteId = cliente.cliente_id || cliente.id_cliente;
+      console.log(`- ID: ${clienteId}, Negocio: ${cliente.nombre_negocio}, Page ID: ${cliente.facebook_page_id}`);
     });
 
     // Buscar cliente con nuestro Page ID
@@ -44,7 +45,7 @@ async function verificarYActualizarCliente() {
           facebook_page_id: '61577782224691',
           estado_suscripcion: 'Activo'
         })
-        .eq('id_cliente', clientes[0].id_cliente)
+        .eq('id_cliente', clientes[0].id_cliente || clientes[0].cliente_id)
         .select();
 
       if (error) {
@@ -60,7 +61,8 @@ async function verificarYActualizarCliente() {
         .from('clientes')
         .insert([
           {
-            id_cliente: 'C0002',
+            cliente_id: 'C0002',
+            id_cliente: 'C0002', // Mantener para compatibilidad
             nombre_negocio: 'Llantería Bot',
             facebook_page_id: '61577782224691',
             estado_suscripcion: 'Activo'

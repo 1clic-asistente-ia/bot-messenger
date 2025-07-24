@@ -8,14 +8,14 @@ async function queryInventario() {
   try {
     const { data: cliente, error: clientError } = await supabase
       .from('clientes')
-      .select('id_cliente')
+      .select('id_cliente, cliente_id')
       .eq('facebook_page_id', '608661302340026')
       .single();
     if (clientError || !cliente) {
       console.error('Error finding client:', clientError);
       return;
     }
-    const clienteId = cliente.id_cliente;
+    const clienteId = cliente.cliente_id || cliente.id_cliente;
     console.log('Cliente ID:', clienteId);
 
     const { data, error } = await supabase

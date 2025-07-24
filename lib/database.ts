@@ -21,7 +21,8 @@ export interface Mensaje {
 }
 
 export interface Cliente {
-  id_cliente: string;
+  cliente_id: string;
+  id_cliente?: string; // Campo antiguo, mantenido para compatibilidad
   nombre_negocio: string;
   facebook_page_id: string;
   configuracion: any;
@@ -43,6 +44,18 @@ export async function getClienteByPageId(pageId: string): Promise<Cliente | null
       return null;
     }
 
+    // Asegurar compatibilidad entre id_cliente y cliente_id
+    if (data) {
+      // Si existe id_cliente pero no cliente_id, asignar id_cliente a cliente_id
+      if (data.id_cliente && !data.cliente_id) {
+        data.cliente_id = data.id_cliente;
+      }
+      // Si existe cliente_id pero no id_cliente, asignar cliente_id a id_cliente
+      else if (data.cliente_id && !data.id_cliente) {
+        data.id_cliente = data.cliente_id;
+      }
+    }
+
     return data;
   } catch (error) {
     console.error('Error en getClienteByPageId:', error);
@@ -53,6 +66,8 @@ export async function getClienteByPageId(pageId: string): Promise<Cliente | null
 // Obtener o crear conversación
 export async function getOrCreateConversacion(clienteId: string, facebookUserId: string): Promise<Conversacion | null> {
   try {
+    console.log('getOrCreateConversacion - clienteId:', clienteId, 'facebookUserId:', facebookUserId);
+    
     // Buscar conversación activa existente
     let { data: conversacion, error } = await supabase
       .from('conversaciones')
@@ -69,6 +84,7 @@ export async function getOrCreateConversacion(clienteId: string, facebookUserId:
 
     // Si no existe, crear nueva
     if (!conversacion) {
+      console.log('Creando nueva conversación para cliente_id:', clienteId);
       const { data: nuevaConversacion, error: createError } = await supabase
         .from('conversaciones')
         .insert({

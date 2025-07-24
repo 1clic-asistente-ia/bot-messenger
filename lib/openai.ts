@@ -218,7 +218,7 @@ export async function generateResponse(
         const resultadoHerramienta = await ejecutarHerramienta(
           nombreFuncion,
           argumentos,
-          cliente.id_cliente,
+          cliente.cliente_id || cliente.id_cliente,
           cliente
         );
         

@@ -25,8 +25,9 @@ async function verificarConfiguracionCompleta() {
     }
 
     if (cliente) {
+      const clienteId = cliente.cliente_id || cliente.id_cliente;
       console.log('✅ Cliente encontrado:', {
-        id: cliente.id_cliente,
+        id: clienteId,
         nombre: cliente.nombre_negocio,
         pageId: cliente.facebook_page_id,
         estado: cliente.estado_suscripcion
@@ -38,10 +39,11 @@ async function verificarConfiguracionCompleta() {
 
     // 2. Verificar inventario
     console.log('\n2️⃣ Verificando inventario...');
+    const clienteId = cliente.cliente_id || cliente.id_cliente;
     const { data: inventario, error: errorInventario } = await supabase
       .from('inventario')
       .select('count(*)')
-      .eq('cliente_id', cliente.id_cliente);
+      .eq('cliente_id', clienteId);
 
     if (errorInventario) {
       console.error('❌ Error al verificar inventario:', errorInventario);

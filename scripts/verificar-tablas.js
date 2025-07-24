@@ -55,7 +55,7 @@ async function verificarTablas() {
     const { data: cliente, error: errorCliente } = await supabase
       .from('clientes')
       .select('*')
-      .eq('id_cliente', 'C0000')
+      .or('cliente_id.eq.C0000,id_cliente.eq.C0000')
       .single();
     
     if (errorCliente) {
